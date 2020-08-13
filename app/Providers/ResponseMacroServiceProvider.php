@@ -54,8 +54,14 @@ class ResponseMacroServiceProvider extends ServiceProvider
          */
         Response::macro('error', function($message = 'messages.SOMETHING-WRONG', $status = 500) {
             $response = array(
-                "success" => false,
                 "message" => Lang::get($message),
+            );
+            return Response::make($response, $status);
+        });
+        Response::macro('created', function($data, $message = 'messages.CREATE-SUCCESS', $status = 201) {
+            $response = array(
+                "message" => Lang::get($message),
+                "data" => $data
             );
             return Response::make($response, $status);
         });

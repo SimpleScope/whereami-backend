@@ -14,4 +14,5 @@ return [
 
     'SOMETHING-WRONG' => 'Something went wrong, Please try again later.',
     'INVALID-INPUT' => 'Invalid input, some required fields may not by filled out.',
+    'CREATE-SUCCESS' => 'Created successfully.',
 ];
