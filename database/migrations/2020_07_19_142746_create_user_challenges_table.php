@@ -17,11 +17,11 @@ class CreateUserChallengesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('challenge_id')->constrained('challenges');
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
             $table->integer('round')->default(1);
             $table->boolean('dropped')->default(false);
-            $table->boolean('is_active')->default(true); 
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

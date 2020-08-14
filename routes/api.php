@@ -29,4 +29,5 @@ Route::get('/private', function (Request $request) {
 
 Route::namespace('Users')->prefix('users')->group(function () {
     Route::post('challenges', 'Challenges@startChallenge');
+    Route::put('challenges', 'Challenges@dropChallenge');
 });
