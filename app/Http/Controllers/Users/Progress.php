@@ -14,7 +14,7 @@ use Illuminate\Validation\Rule;
 
 class Progress extends Controller
 {
-    public function update(Request $request, UpdateProgress $validator) {
+    public function update($user_challenge_id, Request $request, UpdateProgress $validator) {
         try {
             $validator->rules['user_challenge_id'] = [
                 'required',
@@ -23,9 +23,11 @@ class Progress extends Controller
                     $query->where('user_id', $request->get('user_id'))
                         ->where('is_active', true);
                 })];
-            $validator->validate($request->all());
+            $data = $request->all();
+            $data['user_challenge_id'] = $user_challenge_id;
+            $validator->validate($data);
             $update = new ChallengeUpdates();
-            $update->user_challenge_id = $request->input('user_challenge_id');
+            $update->user_challenge_id = $user_challenge_id;
             $update->skipped = $request->input('skipped', false);
             $update->update = $request->input('update', '');
             $update->save();

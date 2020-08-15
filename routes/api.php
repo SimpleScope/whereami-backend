@@ -28,7 +28,7 @@ Route::get('/private', function (Request $request) {
 })->middleware('jwt');
 
 Route::namespace('Users')->prefix('users')->group(function () {
-    Route::post('challenges/progress', 'Progress@update');
+    Route::post('challenges/{user_challenge_id}/progress', 'Progress@update');
     Route::get('challenges/{user_challenge_id}/progress', 'Progress@getHistory');
     Route::post('challenges', 'Challenges@startChallenge');
     Route::put('challenges', 'Challenges@dropChallenge');
