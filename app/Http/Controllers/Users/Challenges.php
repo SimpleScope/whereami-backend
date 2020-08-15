@@ -24,7 +24,7 @@ class Challenges extends Controller
                 return $query->where([
                     ['user_id', '=' ,$request->get('user_id')],
                     ['is_active', '=', true],
-                ]);
+                ])->orWhere('round', $request->input('round', 1));
             });
             $validator->validate($request->all());
             $startDate = CarbonImmutable::now();
@@ -34,6 +34,7 @@ class Challenges extends Controller
             $challenge->challenge_id = $request->get('challenge_id');
             $challenge->start_date = $startDate;
             $challenge->end_date = $endDate;
+            $challenge->round = $request->input('round', 1);
             $challenge->save();
             return response()->created($challenge);
         } catch (ValidationError $validationError) {
