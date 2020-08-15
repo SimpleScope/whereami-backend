@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Users;
 use App\Exceptions\ShivEnigma\ValidationError;
 use App\Http\Controllers\Controller;
 use App\Models\ChallengeUpdates;
+use App\Models\UserChallenges;
 use App\Validators\v1\UpdateProgress;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -41,10 +42,13 @@ class Progress extends Controller
     }
     public function getHistory($user_challenge_id) {
         try {
-            $updates = ChallengeUpdates::where('user_challenge_id', $user_challenge_id)
+            $updates = UserChallenges::findOrFail($user_challenge_id)
+                ->updates()
                 ->latest()
                 ->get();
             return $updates->toJSON();
+        } catch (ModelNotFoundException $validationError) {
+            throw new HttpResponseException(response()->notFound('messages.INVALID-USER-CHALLENGE'));
         } catch (\Exception $e) {
             Log::debug($e);
             throw new HttpResponseException(response()->error());

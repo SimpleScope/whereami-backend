@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Users;
 
 use App\Exceptions\ShivEnigma\ValidationError;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\UserChallenges;
 use App\Validators\v1\DropChallenge;
 use App\Validators\v1\StartChallenge;
@@ -60,8 +61,10 @@ class Challenges extends Controller
     }
     public function getUserChallenges($user_id) {
         try {
-          $challenges = UserChallenges::where('user_id', $user_id)->get();
+          $challenges = User::findOrFail($user_id)->challenges()->get();
           return $challenges->toJSON();
+        } catch (ModelNotFoundException $m) {
+            throw new HttpResponseException(response()->notFound('messages.USER-OR-CHALLENGE-NOT-FOUND'));
         } catch (\Exception $e) {
             Log::debug($e);
             throw new HttpResponseException(response()->error());
