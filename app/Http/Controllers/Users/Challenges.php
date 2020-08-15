@@ -67,10 +67,18 @@ class Challenges extends Controller
         }
     }
     // public function getActiveChallenges
-    public function getUserChallenges($user_id) {
+    public function getUserChallenges($user_id, Request $request) {
         try {
-          $challenges = User::findOrFail($user_id)->challenges()->get();
-          return $challenges->toJSON();
+          $users = User::findOrFail($user_id);
+          if($request->boolean('active')) {
+              $users->load(['challenges' => function ($query) {
+                  $query->where('is_active', '=', true);
+              }]);
+          } else {
+              $users->load('challenges');
+          }
+          $users->latest()->get();
+          return $users->toJSON();
         } catch (ModelNotFoundException $m) {
             throw new HttpResponseException(response()->notFound('messages.USER-OR-CHALLENGE-NOT-FOUND'));
         } catch (\Exception $e) {
