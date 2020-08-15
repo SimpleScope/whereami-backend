@@ -20,6 +20,12 @@ class Challenges extends Controller
 {
     public function startChallenge(Request $request, StartChallenge $validator) {
         try {
+            $validator->rules['challenge_id'][] = Rule::unique('user_challenges')->where(function ($query) use($request) {
+                return $query->where([
+                    ['user_id', '=' ,$request->get('user_id')],
+                    ['is_active', '=', true],
+                ]);
+            });
             $validator->validate($request->all());
             $startDate = CarbonImmutable::now();
             $endDate = $startDate->addDays(100);
@@ -59,6 +65,7 @@ class Challenges extends Controller
             throw new HttpResponseException(response()->error());
         }
     }
+    // public function getActiveChallenges
     public function getUserChallenges($user_id) {
         try {
           $challenges = User::findOrFail($user_id)->challenges()->get();
