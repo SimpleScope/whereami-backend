@@ -9,4 +9,7 @@ class UserChallenges extends Model
     public function updates() {
         return $this->hasMany('App\Models\ChallengeUpdates', 'user_challenge_id', 'id');
     }
+    public function challenge() {
+        return $this->belongsTo('App\Models\Challenge');
+    }
 }

@@ -61,7 +61,7 @@ class Challenges extends Controller
     }
     public function getUserChallenges($user_id) {
         try {
-          $challenges = User::findOrFail($user_id)->challenges()->get();
+          $challenges = User::findOrFail($user_id)->challenges()->with('challenge')->get();
           return $challenges->toJSON();
         } catch (ModelNotFoundException $m) {
             throw new HttpResponseException(response()->notFound('messages.USER-OR-CHALLENGE-NOT-FOUND'));
