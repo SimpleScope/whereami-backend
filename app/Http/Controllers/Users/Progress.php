@@ -45,8 +45,6 @@ class Progress extends Controller
                 ->latest()
                 ->get();
             return $updates->toJSON();
-        } catch (ModelNotFoundException $validationError) {
-            throw new HttpResponseException(response()->notFound('messages.INVALID-USER-CHALLENGE'));
         } catch (\Exception $e) {
             Log::debug($e);
             throw new HttpResponseException(response()->error());
