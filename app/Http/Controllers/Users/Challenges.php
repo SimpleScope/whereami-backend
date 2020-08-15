@@ -7,7 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Models\UserChallenges;
 use App\Validators\v1\DropChallenge;
 use App\Validators\v1\StartChallenge;
+use App\Validators\v1\UpdateProgress;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Log;
@@ -51,6 +53,17 @@ class Challenges extends Controller
             return response()->created($userChallenge, 'messages.DROP-SUCCESS');
         } catch (ValidationError $validationError) {
             throw new HttpResponseException(response()->invalid($validationError));
+        } catch (\Exception $e) {
+            Log::debug($e);
+            throw new HttpResponseException(response()->error());
+        }
+    }
+    public function getUserChallenges($user_id) {
+        try {
+          $challenges = UserChallenges::findOrFail($user_id, 'user_id')->get();
+          return $challenges->toJSON();
+        } catch (ModelNotFoundException $m) {
+            throw new HttpResponseException(response()->notFound('messages.USER-OR-CHALLENGE-NOT-FOUND'));
         } catch (\Exception $e) {
             Log::debug($e);
             throw new HttpResponseException(response()->error());

@@ -16,4 +16,6 @@ return [
     'INVALID-INPUT' => 'Invalid input, some required fields may not by filled out.',
     'CREATE-SUCCESS' => 'Created successfully.',
     'DROP-SUCCESS' => 'Sorry to see you go, You can always start fresh.',
+    'USER-OR-CHALLENGE-NOT-FOUND' => 'Either the user is not found, or they are not part of any challenges.',
+    'INVALID-USER-CHALLENGE' => 'User is not associated with this challenge.',
 ];

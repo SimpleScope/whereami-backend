@@ -13,7 +13,7 @@ class CreateChallengeUpdatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('challenges_updates', function (Blueprint $table) {
+        Schema::create('challenge_updates', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_challenge_id')->constrained('user_challenges');
             $table->boolean('skipped');

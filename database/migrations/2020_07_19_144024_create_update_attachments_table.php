@@ -16,7 +16,7 @@ class CreateUpdateAttachmentsTable extends Migration
         Schema::create('update_attachments', function (Blueprint $table) {
             $table->id();
             $table->enum('type', ['image', 'video']);
-            $table->foreignId('challenge_update_id')->constrained('challenges_updates');
+            $table->foreignId('challenge_update_id')->constrained('challenge_updates');
             $table->text('lint');
         });
     }
