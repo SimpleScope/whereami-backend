@@ -20,12 +20,6 @@ class Challenges extends Controller
 {
     public function startChallenge(Request $request, StartChallenge $validator) {
         try {
-            $validator->rules['challenge_id'][] = Rule::unique('user_challenges')->where(function ($query) use($request) {
-                return $query->where([
-                    ['user_id', '=' ,$request->get('user_id')],
-                    ['is_active', '=', true],
-                ])->orWhere('round', $request->input('round', 1));
-            });
             $validator->validate($request->all());
             $startDate = CarbonImmutable::now();
             $endDate = $startDate->addDays(100);
@@ -46,12 +40,6 @@ class Challenges extends Controller
     }
     public function dropChallenge(Request $request, DropChallenge $validator) {
         try {
-            $validator->rules['user_challenge_id'] = [
-                'required',
-                'exists:App\Models\UserChallenges,id',
-                Rule::exists('user_challenges', 'id')->where(function ($query) use ($request) {
-                    $query->where('user_id', $request->get('user_id'));
-                })];
             $validator->validate($request->all());
             $userChallenge = UserChallenges::where('id',$request->get('user_challenge_id'))->firstOrFail();
             $userChallenge->dropped = true;
