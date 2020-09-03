@@ -33,8 +33,11 @@ class CheckJWT
     public function handle($request, Closure $next)
     {
         $auth0 = \App::make('auth0');
-        $accessToken = $request->bearerToken();
         try {
+            $accessToken = $request->bearerToken();
+            if(!$accessToken) {
+                throw new InvalidTokenException("Token not found");
+            }
             $tokenInfo = $auth0->decodeJWT($accessToken);
             $user = $this->userRepository->getUserByDecodedJWT($tokenInfo);
             if (!$user) {
